@@ -1,0 +1,331 @@
+/*
+ * Copyright (c) KylinSoft Co., Ltd. 2016-2024.All rights reserved.
+ *
+ * Authors:
+ *  Kobe Lee    lixiang@kylinos.cn
+ *  Alan Xie    xiehuijun@kylinos.cn
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+syntax = "proto2";
+option java_package = "cn.kylinos.kmre.proto.kmrecore";
+option java_outer_classname = "KmreCoreProto";
+package cn.kylinos.kmre.kmrecore;
+
+// head:0001 launcher
+message InstallApp {
+    required string file_name = 1;
+    required string app_name = 2;
+    required string package_name = 3;
+}
+
+// head:0002 launcher
+message UninstallApp {
+    required string package_name = 1;
+}
+
+// head:0003 launcher
+message LaunchApp {
+    required string package_name = 1;
+    required bool fullscreen = 2;
+    required int32 width = 3;
+    required int32 height = 4;
+    required int32 density = 5;
+}
+
+// head:0004 launcher
+message CloseApp {
+    required string app_name = 1;
+    required string package_name = 2;
+    optional bool force_kill = 3;
+}
+
+// head:0005 launcher
+message  GetInstalledAppList{
+    optional bool include_hide_app = 1;
+}
+
+// head:0006 launcher
+message  GetRunningAppList{
+    required bool with_thumbnail = 1;
+}
+
+// head:0007 manager
+message SetClipboard {
+    required string content = 1;
+}
+
+// head:0008 launcher
+message FocusWin {
+    required int32 focus_win = 1;
+}
+
+// head:0009  launcher
+message ControlApp {
+    required int32 display_id = 1;
+    required string package_name = 2;
+    required int32 event_type = 3;
+    optional int32 event_value = 4;
+}
+
+// head:0010 manager
+message InsertFile {
+    required string data = 1;
+    required string mime_type = 2;
+}
+
+// head:0011 manager
+message RemoveFile {
+    required string data = 1;
+    required string mime_type = 2;
+}
+
+// head:0012 manager
+message RequestMediaFiles{
+    /* type 0: dump all mediafile
+            1: image files
+            2: video files
+            3: audio files
+            4. document files
+    */
+    required int32 type = 1;
+}
+
+// head:0013 manager
+message DragFile {
+    required string file_path = 1;
+    required string package_name = 2;
+    optional int32 display_id = 3;
+    optional bool has_double_display = 4;
+}
+
+// head:0014 launcher
+message RotationChanged {
+    required int32 display_id = 1;
+    required string package_name = 2;
+    required int32 width = 3;
+    required int32 height = 4;
+    required int32 rotation = 5;
+}
+
+// head:0015  Set system properties
+message SetSystemProp {
+    /*
+    * event_type: 0:prop,1:setting
+    * value_field: prop name
+    * value: prop value
+    */
+    required int32 event_type = 1;
+    required string value_field = 2;
+    required string value = 3;
+}
+
+// head:0016  Get system properties
+message GetSystemProp {
+    /*
+    * event_type: 0:prop,1:setting
+    * value_field: prop name
+    */
+    required int32 event_type = 1;
+    required string value_field = 2;
+}
+
+// head:0017  Update App Window Size
+message UpdateAppWindowSize {
+    required string package_name = 1;
+    required int32 display_id = 2;
+    required int32 width = 3;
+    required int32 height = 4;
+}
+
+// head:0018 manager proxy
+message SetProxy {
+    required bool open = 1;
+    optional string host = 2;
+    optional int32 port = 3;
+    optional string type = 4;
+}
+
+// head:0019  Update Display Size
+message UpdateDisplaySize {
+    required int32 display_id = 1;
+    required int32 width = 2;
+    required int32 height = 3;
+}
+
+//head:0020 manager
+message AnswerCall {
+    required bool answer = 1;
+}
+
+message ActionResult {
+    /* value: SUCCESS = true, FAILURE = false */
+    required bool result = 1;
+    required string org_cmd = 2;
+    optional string err_info = 3;
+}
+
+message EventInfo { /* client sent to kylin server */
+    /* event_id: backtodesktop = 1 */
+    required int32 event_id = 1;
+    optional string package_name = 2;
+}
+
+message InstalledAppItem {
+    required string app_name = 1;
+    required string package_name = 2;
+    required int64 version_code = 3;
+    required string version_name = 4;
+    optional string app_info = 5;
+}
+
+message InstalledAppList {
+    repeated InstalledAppItem item = 1;
+    required int32 size = 2;
+}
+
+message RunningAppItem {
+    required string app_name = 1;
+    required string package_name = 2;
+}
+
+message RunningAppList {
+    repeated RunningAppItem item = 1;
+    required int32 size = 2;
+}
+
+message Notification {
+    required string package_name = 1;
+    required string app_name = 2;
+    optional string text = 3;
+    optional int32 display_id = 4;
+}
+
+message LaunchResult {
+    required string app_name = 1;
+    required string package_name = 2;
+    required bool result = 3;
+    required int32 display_id = 4;
+    required int32 width = 5;
+    required int32 height = 6;
+    required int32 density = 7;
+    required bool fullscreen = 8;
+    optional bool exists = 9;
+    optional bool app_resumed = 10;
+}
+
+message CloseResult {
+    required string package_name = 1;
+    required bool result = 2;
+}
+
+message VirtualScreenFocusResult {
+    required int32 display_id = 1;
+    required bool result = 2;
+}
+
+message InputMethodRequest {
+    required int32 display_id = 1;
+    required string package_name = 2;
+    required bool ret = 3;
+    optional int32 x_pos = 4;
+    optional int32 y_pos = 5;
+}
+
+message SingleFile {
+    required string data = 1;
+    required string mime_type = 2;
+}
+
+message FilesList {
+    /* type 0: dump all mediafile info
+            1: insert file
+            2: delete file
+    */
+    required int32 type = 1;
+    repeated SingleFile item = 2;
+    required int32 size = 3;
+}
+
+message MediaPlayStatus {
+    required bool result = 1;
+}
+
+message AppMultiplier {
+    required string package_name = 1;
+    required int32 multiplier = 2;
+    optional string info = 3;
+}
+
+message AppMultiplierList {
+    repeated AppMultiplier item = 1;
+    required int32 size = 2;
+}
+
+message ResponseInfo {
+    required int32 event_id = 1;
+    required string package_name = 2;
+    required string category = 3;
+    required int32 ret = 4;
+    optional string info = 5;
+}
+
+message MultiplierSwitch {
+    required int32 event_id = 1;
+    required string package_name = 2;
+    required bool enable = 3;
+}
+
+message LinkOpen {
+    required string url = 1;
+}
+
+message UpdatePackageStatus {
+    /*
+    * package_name: 应用安装卸载包名
+    * status: 应用安装卸载状态（0:安装,1:卸载）
+    * type: 类型待定 
+    */
+    required string package_name = 1;
+    required int32 status = 2;
+    optional int32 type = 3;
+}
+
+message SendSystemProp {
+    /*
+    * event_type: setting/prop
+    * value_field: value name
+    * value: value
+    */
+    required int32 event_type = 1;
+    required string value_field = 2;
+    required string value = 3;
+}
+
+message EventSequence {
+    optional Notification notification = 1;
+    optional EventInfo event_info = 2;
+    optional LaunchResult launch_result = 3;
+    optional CloseResult close_result = 4;
+    optional SetClipboard set_clipboard = 5;
+    optional VirtualScreenFocusResult focus_result = 6;
+    optional InputMethodRequest inputmethod_request = 7;
+    optional FilesList files_list = 8;
+    optional MediaPlayStatus mediaplay_status = 9;
+    optional AppMultiplierList app_multipliers = 10;
+    optional ResponseInfo response_info = 11;
+    optional MultiplierSwitch multiplier_switch = 12;
+    optional LinkOpen link_open = 13;
+    optional UpdatePackageStatus update_package_status = 14;
+}
