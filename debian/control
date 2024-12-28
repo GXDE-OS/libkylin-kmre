@@ -11,7 +11,7 @@ Build-Depends: debhelper (>= 9),
 Standards-Version: 3.9.8
 
 Package: libkylin-kmre
-Architecture: arm64 amd64
+Architecture: any
 Conflicts: kydroid2, kydroid2-app-data, kydroid2-daemon, kydroid2-filewatcher, kydroid2-fuse, kydroid2-image-data, libkydroidrequest
 Replaces: libkydroidrequest
 Depends: ${shlibs:Depends},
